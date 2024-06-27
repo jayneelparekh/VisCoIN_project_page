@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" class="fontawesome-i2svg-active fontawesome-i2svg-complete">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script type="text/javascript"
+  src="https://www.maths.nottingham.ac.uk/plp/pmadw/LaTeXMathML.js">
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>VisCoIN Project Page</title>
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6">
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+      body {
+        font-size:16px;
+        margin:80px auto;
+        width:auto;
+        max-width:950px;
+        font-family: Arial;
+      }
+
+      hr {
+        border:0;
+        height:1.0px;
+        background-image:linear-gradient(to right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
+      }
+
+      .gap-30 {
+      width:100%;
+      height:30px;
+      }
+
+      .gap-20 {
+      width:100%;
+      height:20px;
+      }
+
+      .gap-10 {
+      width:100%;
+      height:10px;
+      }
+
+      .gap-5 {
+      width:100%;
+      height:5px;
+      }
+      .paper {
+        max-width: 700px;
+      }
+      @media (max-width: 910px) {
+        .paper {
+          max-width: 500px;
+        }
+      }
+      @media (max-width: 610px) {
+        .paper {
+          max-width: 300px;
+        }
+      }
+    </style>
+  </head>
+
+  <div class="container">
+  <body>
+
+    <center><span style="font-size:32px">
+      Restyling Unsupervised Concept Based <br> Interpretable Networks with Generative Models
+    </span></center>
+    <div class="gap-20"></div>
+
+    <!---------------------  authors --------------------->
+    <div class="row">
+        <p>
+          <a href="https://jayneelparekh.github.io/"><span style="font-size:19px; color:rgb(9, 14, 152)">Jayneel Parekh<sup>*1,2</sup> </span></a>
+          &emsp;
+          <a href="https://qbouniot.github.io/"><span style="font-size:19px; color:rgb(9, 14, 152)">Quentin Bouniot<sup>*2</sup> </span></a>
+          &emsp;
+          <a href="https://perso.telecom-paristech.fr/mozharovskyi/"><span style="font-size:19px; color:rgb(9, 14, 152)">Pavlo Mozharovskyi<sup>2</sup> </span></a>
+          &emsp;
+          <a href="https://sites.google.com/site/alasdairnewson/"><span style="font-size:19px; color:rgb(9, 14, 152)">Alasdair Newson<sup>1,2</sup> </span></a>
+          &emsp;
+          <a href="https://perso.telecom-paristech.fr/fdalche/"><span style="font-size:19px; color:rgb(9, 14, 152)">Florence d’Alché-Buc<sup>2</sup> </span></a>
+        </p>
+    </div>
+    
+    <div class="row">
+        &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
+      <div class="col-md-8">
+        <center><span style="font-size:18px"><sup>1</sup> ISIR, Sorbonne Université, France
+          <br>
+          <sup>2</sup> LTCI, Télécom Paris, Institute Polytechnique de Paris, France
+          <br>
+          * Equal contribution
+        </span></center>
+      </div> 
+    </div>
+
+    <br>
+
+      <center>
+        <span style="font-size:18px">
+          [<a href="" style="color:rgb(9, 14, 152)">Paper</a>]
+          &emsp; 
+          [<a>Code (will be added soon)</a>]&nbsp;
+        </span>
+        </center>
+    
+    <div class="gap-10"></div>
+    <hr>
+    
+
+    <!--------------------- abstract --------------------->
+    <div class="gap-20"></div>
+    <center><b><span style="font-size:28px">Abstract</span></b><br></center>
+    <div class="gap-10"></div>
+    <p> 
+      Developing inherently interpretable models for prediction has gained prominence in recent years. A subclass of these models, wherein the interpretable network relies on learning high-level concepts, are valued because of closeness of concept representations to human communication. 
+      However, the visualization and understanding of the learnt unsupervised dictionary of concepts encounters major limitations, specially for large-scale images. We propose here a novel method that relies on mapping the concept features to the latent space of a pretrained generative model. 
+      The use of a generative model enables high quality visualization, and naturally lays out an intuitive and interactive procedure for better interpretation of the learnt concepts. Furthermore, leveraging pretrained generative models has the additional advantage of making the training of the system more efficient. 
+      We quantitatively ascertain the efficacy of our method in terms of accuracy of the interpretable prediction network, fidelity of reconstruction, as well as faithfulness and consistency of learnt concepts. The experiments are conducted on multiple image recognition benchmarks for large-scale images.
+    </p>
+    <div class="gap-5"></div>
+
+    <hr>
+    <div class="gap-20"></div>
+    <center><b><span style="font-size:28px">Method</span></b><br></center>
+    <div class="gap-20"></div>
+    <embed width="56%" src="images/visu_coins_comp/visu_coins_comp-1.png">
+    <embed width="81%" src="images/viscoin_v3/viscoin_v3-1.png">
+    <embed width="94%" src="images/interact_concept_v5/interact_concept_v5-1.png">
+    <embed width="54%" src="images/tab_acc.png">
+    <embed width="48%" src="images/tab_rec.png">
+    <embed width="57%" src="images/tab_ff.png">  
+    <embed width="44%" src="images/tab_cnst.png">
+      <br>
+    <embed width="44%" src="images/qualitative_cub_1/qualitative_cub_1-1.png"> &emsp; &emsp; 
+    <embed width="44%" src="images/qualitative_cub_2/qualitative_cub_2-1.png">
+    <embed width="44%" src="images/qualitative_celeba_1/qualitative_celeba_1-1.png"> &emsp; &emsp; 
+    <embed width="44%" src="images/qualitative_celeba_2/qualitative_celeba_2-1.png">
+    <embed width="44%" src="images/qualitative_cars_1/qualitative_cars_1-1.png"> &emsp; &emsp; 
+    <embed width="44%" src="images/qualitative_cars_2/qualitative_cars_2-1.png">
+    <p></p>
+    <p><i><b>
+      Text under construction
+    </i></p>
+  
+    <!--------------------- content --------------------->
+    <!-- <div class="gap-20"></div> -->
+    <div class="gap-10"></div>
+    <center><b><span style="font-size:18px">TBA</span></b></center>
+    <div class="gap-10"></div>
+    <p>
+
+    </p>
+      
+
+      
+    
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="js/bootstrap.min.js"></script>
+
+</html>
