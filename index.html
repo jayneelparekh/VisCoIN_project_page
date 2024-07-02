@@ -134,34 +134,131 @@
     <div class="gap-20"></div>
     <center><b><span style="font-size:28px">Method</span></b><br></center>
     <div class="gap-20"></div>
-    <embed width="56%" src="images/visu_coins_comp/visu_coins_comp-1.png">
-    <embed width="81%" src="images/viscoin_v3/viscoin_v3-1.png">
-    <embed width="94%" src="images/interact_concept_v5/interact_concept_v5-1.png">
-    <embed width="54%" src="images/tab_acc.png">
-    <embed width="48%" src="images/tab_rec.png">
-    <embed width="57%" src="images/tab_ff.png">  
-    <embed width="44%" src="images/tab_cnst.png">
+
+    <p>
+      Our system (named VisCoIN) is part of a broader family of by-design interpretable models, termed Concept-based Interpretable Networks (CoINs), shown on the left below.
+      CoINs rely on predicting a concept representation \(\Phi(x)\) (a dictionary of \(K\) concept functions) and then making the final classification decision by using a simple function \(\Theta\) that operates on \(\Phi(x)\).
+      VisCoIN is a type of unsupervised CoIN that learns \(\Phi(x)\) in a completely unsupervised fashion by imposing properties as loss functions. 
+    </p>
+    <p>
+      The system design of VisCoIN is shown on the right below. It leverages a pretrained generative model \(G\) for visualization and a pretrained classifier \(f\).
+      The hidden layers of pretrained classifier provide a rich source for learning concept representations that are also useful for prediction.
+      The generator is used to obtain a high-quality reconstruction of input \(x\) through \(\Phi(x)\) which is essential for visualization of individual concept functions.
+      We use a fixed pretrained generator to keep the design flexible, modular and training costs low. 
+      Specifically for VisCoIN we optimize a training loss, consisting of three broad terms, output fidelity loss \(\mathcal{L}_{of}\), modified reconstruction loss \(\mathcal{L}_{rec}^G\), and all regularization terms combined under \(\mathcal{L}_{reg}\). 
+      The training loss is optimized w.r.t trainable subnetworks \(\Psi, \Theta, \Omega\)
+      \[
+      \mathcal{L}_{of}(x ; \Psi, \Theta) = \alpha CE(g(x), f(x)).
+      \]
+
+      \[
+      \mathcal{L}_{rec}^G(x ; \Psi, \Omega) = ||\tilde{x} - x||_2^2 + ||\tilde{x} - x||_1 + \beta \textrm{LPIPS}(\tilde{x}, x) + \gamma CE(f(\tilde{x}), f(x)).
+      \]
+      \[
+      \begin{aligned}
+        & \mathcal{L}_{reg}(x ; \Psi, \Omega) =  \mathcal{L}_{reg-\Psi}(x ; \Psi) + \mathcal{L}_{reg-\Omega}(x ; \Omega),  \\
+        & \mathcal{L}_{reg-\Omega}(x ; \Omega) = ||w_x^+ - \bar{w}||_2^2, \quad \mathcal{L}_{reg-\Psi}(x ; \Psi) = \delta ||\Phi(x)||_1 + \mathcal{L}_{orth}(\Psi).
+      \end{aligned}
+      \]
+      \[
+      \mathcal{L}_{train}(x ; \Psi, \Theta, \Omega) = \mathcal{L}_{of}(x;\Psi, \Theta) + \mathcal{L}^G_{rec}(x;\Psi, \Omega) + \mathcal{L}_{reg}(x;\Psi, \Omega)
+      \]
+    </p>
+    <center> <embed width="81%" src="images/viscoin_v3/viscoin_v3-1.png"> </center>
+
+
+    <div class="gap-30"></div>
+    <center><b><span style="font-size:21px">Interpretation phase</span></b><br></center>
+    <div class="gap-10"></div>
+
+    <p> 
+      The interpretation phase is divided in two parts: (1) Concept relevance estimation, and (2) Concept visualization
+    </p>
+    <div class="gap-5"></div>
+    <center><b><span style="font-size:18px">Concept relevance estimation</span></b><br></center>
+    <div class="gap-5"></div>
+    This essentially follows previous CoINs. We first estimate the local relevance/importance of a concept for a given sample using the weights of fully-connected layer in \( \Theta \) and concept activations \( \Phi(x) \).
+    Global relevance/importance of a concept function for a class is obtained by averaging their local relevance
+    \[
+    r_k(x) = \frac{\alpha_k(x)}{\max_l |\alpha_l(x)|}, \quad 
+    \alpha_k(x) = \textrm{pool}(\phi_k(x))\Theta_W^{k, \hat{c}},
+    \quad
+    r_{k, c} = \mathbb{E} (r_k(x) | g(x)=c)
+    \]
+
+    <div class="gap-5"></div>
+    <center><b><span style="font-size:18px">Concept visualization</span></b><br></center>
+    <div class="gap-5"></div>
+    <p>
+      
+      The previous step provides the information about which concepts are important for a given sample or globally for a class. Next, we visualize the information encoded by the important concepts
+      The visualization pipeline is mainly based on the idea of latent traversals in generative models.
+      By imputing a higher activation for \(\phi_k(x)\) in \(\Phi(x)\), and comparing the obtained visualization to the original reconstruction \(\tilde{x}\) (obtained with the untouched \(\Phi(x)\)), we interpret information encoded by \(\phi_k\) about image \(x\). 
+      
+    </p>
+    <center> <embed width="94%" src="images/interact_concept_v5/interact_concept_v5-1.png"> </center>
+      <div class="gap-20"></div>
+
+    <center><embed width="56%" src="images/visu_coins_comp/visu_coins_comp-1.png"></center>
+    <p><i><b>Illustration:</b> Visualization comparison for the same learnt concept (``Yellow-colored head'') using activation maximization (second column) as in FLINT and our proposed VisCoIN visualization. 
+      Using our concept translator, that maps concept representation space to the latent space of a generative model, we can visualize each concept at different activation values, allowing for more granular and interactive interpretation.
+    </i></p>
+
+    <hr>
+    <div class="gap-20"></div>
+    <center><b><span style="font-size:28px">Experiments</span></b><br></center>
+    <div class="gap-20"></div>
+    We experiment with datasets with large scale images in multiple domains (CelebA-HQ, CUB-200, Stanford Cars). Two out of three datasets are also multi-class classification problems with large number of classes in constrained data domains.
+    We use pretrained ResNet-50 as classifier backbone, and StyleGAN2-ADA for pretrained generator. Our network is evaluated for the four axes: Accuracy, Reconstruction, Faithfulness, Consistency. The Faithfulness and Consistency metrics are proposed by us in the context of CoINs as evaluation metrics more inline with the visualization aspect of CoINs.
+    The results are summarized below:
+
+    <div class="gap-20"></div>
+    
+    <center> <embed width="54%" src="images/tab_acc.png"> </center>
+    <p> <i> <b> Classification accuracy </b> of VisCoIN is competetive or better than other unsupervised CoINs. It is also comparable with the original base classification performance. </i></p>
+    
+    <center> <embed width="48%" src="images/tab_rec.png"> </center>
+      <p> <i> <b> Reconstruction quality </b> in VisCoIN is significantly better than other unsupervised CoINs in terms of perceptual similarity (LPIPS) approximation of original image distribution (FID).</i></p>
+    
+      <div class="gap-20"></div>
+      For a given sample \(x\) with activation \(\Phi(x)\), predicted class\(\hat{c}\)and a threshold \(\tau\), we first ``remove'' all concepts with relevance greater than some threshold by setting their activation to 0. 
+      This modified version of \(\Phi(x)\)is referred to as \(\Phi_{rem}(x)\). 
+      To compute faithfulness for a given \(x\), denoted by (\text{FF}_x\), we compute the change in probability of the predicted class from original reconstructed sample \(\tilde{x} = G(\Omega(\Phi(x), \Phi^{\prime}(x)))\) to new sample \(x_{rem} = G(\Omega(\Phi_{rem}(x), \Phi^{\prime}(x)))\).
+    
+      <div class="gap-10"></div>
+    <center> <embed width="57%" src="images/tab_ff.png">  </center>
+    <p> <i> <b> Faithfulness of concept dictionary </b> (median over 1000 random test images) is similar in all three unsupervised CoINs on CelebA-HQ but significantly better in VisCoIN on classification tasks with large number of classes</i></p>
+    
+
+    <div class="gap-10"></div>
+    Our concept consistency metric for a given concept is obtained as accuracy of a binary classifier on a dataset created by separating two sets of samples, generated either with very high activation of the given concept, or generated with zero activation of that concept.
+    <center> <embed width="44%" src="images/tab_cnst.png"> </center>
+    <p> <i> <b> Consistency of concept dictionary </b> in VisCoIN is noticeably better than other unsupervised CoINs</i></p>
+    
+    
+    <div class="gap-20"></div>
+    <center><b><span style="font-size:21px">Qualitative examples</span></b><br></center>
+    <div class="gap-10"></div>
       <br>
     <embed width="44%" src="images/qualitative_cub_1/qualitative_cub_1-1.png"> &emsp; &emsp; 
     <embed width="44%" src="images/qualitative_cub_2/qualitative_cub_2-1.png">
+      
+    <p> &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; Concept for "Red eye" 
+      &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; Concept for "Blue upperparts"
+    </p>
+
     <embed width="44%" src="images/qualitative_celeba_1/qualitative_celeba_1-1.png"> &emsp; &emsp; 
     <embed width="44%" src="images/qualitative_celeba_2/qualitative_celeba_2-1.png">
+    
+    <p> &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; Concept for "Makeup" 
+        &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; Concept for "Eye squint"
+    </p>
+
     <embed width="44%" src="images/qualitative_cars_1/qualitative_cars_1-1.png"> &emsp; &emsp; 
     <embed width="44%" src="images/qualitative_cars_2/qualitative_cars_2-1.png">
-    <p></p>
-    <p><i><b>
-      Text under construction
-    </i></p>
-  
-    <!--------------------- content --------------------->
-    <!-- <div class="gap-20"></div> -->
-    <div class="gap-10"></div>
-    <center><b><span style="font-size:18px">TBA</span></b></center>
-    <div class="gap-10"></div>
-    <p>
-
-    </p>
-      
+    <p> &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; Concept for "Silver front" 
+        &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; Concept for "Black radiator grille"
+    </p>    
 
       
     
